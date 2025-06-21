@@ -94,8 +94,8 @@ jobs:
       - name: install Node.js
         uses: actions/setup-node@v4
         with:
-          # Use Node.js 14 for better cross-platform compatibility
-          node-version: 14
+          # Use Node.js 16 - has ARM64 support and works with pnpm standalone tests
+          node-version: 16
 
       - name: 'Test: which (pnpm)'
         run: which pnpm
