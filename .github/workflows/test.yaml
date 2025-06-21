@@ -94,8 +94,8 @@ jobs:
       - name: install Node.js
         uses: actions/setup-node@v4
         with:
-          # pnpm@7.0.0 is not compatible with Node.js 12
-          node-version: 12.22.12
+          # Use Node.js 14 for better cross-platform compatibility
+          node-version: 14
 
       - name: 'Test: which (pnpm)'
         run: which pnpm
