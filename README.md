@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: pnpm/action-setup@v4
+      - uses: suncoast-innovation-guild/action-setup@v4
         with:
           version: 10
 ```
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: pnpm/action-setup@v4
+      - uses: suncoast-innovation-guild/action-setup@v4
 ```
 
 ### Install pnpm and a few npm packages
@@ -114,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: suncoast-innovation-guild/action-setup@v4
         with:
           version: 10
           run_install: |
@@ -138,7 +138,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: suncoast-innovation-guild/action-setup@v4
         name: Install pnpm
         with:
           version: 10
@@ -162,4 +162,4 @@ This action does not setup Node.js for you, use [actions/setup-node](https://git
 
 ## License
 
-[MIT](https://github.com/pnpm/action-setup/blob/master/LICENSE.md) © [Hoàng Văn Khải](https://github.com/KSXGitHub/)
+[MIT](https://github.com/suncoast-innovation-guild/action-setup/blob/master/LICENSE.md) © [Hoàng Văn Khải](https://github.com/KSXGitHub/)
