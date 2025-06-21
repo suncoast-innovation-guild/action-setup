@@ -1,0 +1,56 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+  workflow_dispatch:
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/pnpm/action-setup.git || true
+          git fetch upstream
+
+      - name: Check for updates
+        id: check
+        run: |
+          UPSTREAM_COMMITS=$(git rev-list HEAD..upstream/master --count)
+          echo "commits_behind=$UPSTREAM_COMMITS" >> $GITHUB_OUTPUT
+          
+          if [ "$UPSTREAM_COMMITS" -gt 0 ]; then
+            echo "need_sync=true" >> $GITHUB_OUTPUT
+            echo "Found $UPSTREAM_COMMITS new commits in upstream"
+          else
+            echo "need_sync=false" >> $GITHUB_OUTPUT
+            echo "Fork is up to date"
+          fi
+
+      - name: Create sync issue
+        if: steps.check.outputs.need_sync == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'upstream-sync',
+              state: 'open'
+            });
+            
+            if (issues.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Upstream sync required',
+                body: `The upstream repository has ${{ steps.check.outputs.commits_behind }} new commits that need to be reviewed and potentially merged.\n\nPlease review the changes and manually merge if appropriate:\n\n\`\`\`bash\ngit fetch upstream\ngit log HEAD..upstream/master --oneline\n# Review changes, then merge if safe\ngit merge upstream/master\n\`\`\``,
+                labels: ['upstream-sync', 'maintenance']
+              });
+            }
