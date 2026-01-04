@@ -1,5 +1,10 @@
 {
   "private": true,
+  "pnpm": {
+    "overrides": {
+      "form-data": ">=4.0.4"
+    }
+  },
   "scripts": {
     "build:ncc": "ncc build --minify --no-source-map-register --no-cache dist/tsc/index.js --out dist/",
     "build": "tsc && pnpm run build:ncc",
