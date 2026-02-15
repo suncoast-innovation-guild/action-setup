@@ -6,7 +6,8 @@
   "pnpm": {
     "overrides": {
       "form-data": ">=4.0.4",
-      "fast-xml-parser": ">=5.3.4"
+      "fast-xml-parser": ">=5.3.4",
+      "undici": ">=6.23.0"
     }
   },
   "scripts": {
