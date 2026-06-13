@@ -18,7 +18,7 @@ export async function runRestoreCache(inputs: Inputs) {
   debug(`Primary key is ${primaryKey}`)
   saveState('cache_primary_key', primaryKey)
 
-  let cacheKey = await restoreCache([cachePath], primaryKey)
+  const cacheKey = await restoreCache([cachePath], primaryKey)
 
   setOutput('cache-hit', Boolean(cacheKey))
 
