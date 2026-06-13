@@ -11,10 +11,10 @@
     }
   },
   "scripts": {
-    "build:ncc": "ncc build --minify --no-source-map-register --no-cache dist/tsc/index.js --out dist/",
-    "build": "tsc && pnpm run build:ncc",
+    "build:bundle": "esbuild src/index.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/index.js --loader:.json=json",
+    "build": "pnpm run build:bundle",
     "start": "pnpm run build && sh ./run.sh",
-    "update-pnpm-dist": "pnpm install && cp ./node_modules/pnpm/dist/pnpm.cjs ./dist/pnpm.cjs && cp ./node_modules/pnpm/dist/worker.js ./dist/worker.js",
+    "update-bootstrap": "node scripts/update-bootstrap.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check": "pnpm lint && pnpm typecheck"
@@ -32,9 +32,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@vercel/ncc": "^0.38.1",
+    "esbuild": "^0.27.4",
     "eslint": "^9.17.0",
-    "pnpm": "^10.0.0",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.19.1"
   }
