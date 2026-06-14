@@ -6,15 +6,29 @@
   "pnpm": {
     "overrides": {
       "form-data": ">=4.0.4",
-      "fast-xml-parser": ">=5.3.4",
-      "undici": ">=6.23.0"
+      "fast-xml-parser": ">=5.7.0 <6",
+      "undici": ">=7.24.0 <8"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-w5hq-g745-h8pq",
+        "GHSA-3ppc-4f35-3m26",
+        "GHSA-7r86-cg39-jmmj",
+        "GHSA-23c5-xmqv-rm74",
+        "GHSA-2g4f-4pwh-qvx6",
+        "GHSA-25h7-pfq9-p65f",
+        "GHSA-rf6f-7fwh-wjgh",
+        "GHSA-f886-m6hf-6m8v",
+        "GHSA-3v7f-55p6-f55p",
+        "GHSA-c2c7-rcm5-vvqj"
+      ]
     }
   },
   "scripts": {
-    "build:ncc": "ncc build --minify --no-source-map-register --no-cache dist/tsc/index.js --out dist/",
-    "build": "tsc && pnpm run build:ncc",
+    "build:bundle": "esbuild src/index.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/index.js --loader:.json=json",
+    "build": "pnpm run build:bundle",
     "start": "pnpm run build && sh ./run.sh",
-    "update-pnpm-dist": "pnpm install && cp ./node_modules/pnpm/dist/pnpm.cjs ./dist/pnpm.cjs && cp ./node_modules/pnpm/dist/worker.js ./dist/worker.js",
+    "update-bootstrap": "node scripts/update-bootstrap.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check": "pnpm lint && pnpm typecheck"
@@ -27,14 +41,14 @@
     "@types/expand-tilde": "^2.0.2",
     "@types/node": "^22.0.0",
     "expand-tilde": "^2.0.2",
-    "yaml": "^2.3.4",
+    "yaml": "^2.9.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@vercel/ncc": "^0.38.1",
+    "esbuild": "^0.28.1",
     "eslint": "^9.17.0",
-    "pnpm": "^10.0.0",
+    "globals": "^16.0.0",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.19.1"
   }
